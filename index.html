@@ -368,6 +368,7 @@ body{font-size:13px;line-height:1.45}
 }
 @media(max-width:370px){.marca-eyebrow{display:none}.topo-titulos h1{font-size:13px}.coluna-logo{flex-basis:clamp(180px,29vh,210px);height:clamp(180px,29vh,210px)}.painel-intro h2{font-size:13px}.mode-tab{padding:0 6px}.palette-swatches{grid-template-columns:repeat(3,minmax(0,1fr))}.palette-swatch{height:15px}}
 
+.btn-sair-teste{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:36px;padding:0 10px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);font-size:11px;font-weight:650;white-space:nowrap;cursor:pointer;flex:none}.btn-sair-teste:hover{background:var(--accent-soft);border-color:#bdc9d6}.btn-sair-teste svg{display:block;width:15px;height:15px}@media(max-width:760px){.btn-sair-teste{min-height:32px;gap:4px;padding:0 7px;border-radius:8px;font-size:10px}.btn-sair-teste svg{width:14px;height:14px}}
 </style>
 </head>
 
@@ -385,6 +386,7 @@ body{font-size:13px;line-height:1.45}
       <p>Experimente, compare e aprove as cores do logotipo.</p>
     </div>
   </div>
+  <button type="button" class="btn-sair-teste" id="btn-sair-teste" title="Sair do teste e voltar ao portfólio" aria-label="Sair do teste e voltar ao portfólio" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 19 3 12l7-7"/><path d="M3 12h18"/></svg><span>Sair</span></button>
   <button type="button" class="btn-tutorial" id="btn-ajuda" title="Como usar" aria-label="Como usar">Tutorial</button>
 </header>
 
@@ -744,7 +746,7 @@ document.querySelector(".painel-tabs")?.addEventListener("click", event => {
 
 function iniciar(){
 
-  const salvo = localStorage.getItem("cores-logo-rino");
+  const salvo = localStorage.getItem("cores-logo-rino-v2");
 
   let coresIniciais = null;
 
@@ -1223,7 +1225,7 @@ function vincularControles(){
     ()=>{
 
       localStorage.setItem(
-        "cores-logo-rino",
+        "cores-logo-rino-v2",
         JSON.stringify(estadoCores)
       );
 
@@ -1705,6 +1707,12 @@ document.addEventListener(
   "DOMContentLoaded",
   iniciar
 );
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("btn-sair-teste");
+  if (!btn || new URLSearchParams(window.location.search).get("portfolioPreview") !== "1" || window.parent === window) return;
+  btn.hidden = false;
+  btn.addEventListener("click", () => window.parent.postMessage({ type: "rino:close-preview" }, window.location.origin));
+});
 </script>
 
 </body>
